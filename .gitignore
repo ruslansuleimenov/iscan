@@ -1,0 +1,65 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# Python bytecode / caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Build / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Local environment
+.env
+.env.*
+!.env.example
+
+# IDE / editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+
+# iscan generated artifacts
+report.html
+report_assets/
+*.iscan-session.json
+*.iscan-report.json
+
+# Local project preparation docs / requirements
+# These files are useful locally, but should not be shared to GitHub.
+docs/roadmap.md
+docs/mvp/
+docs/v1/
+docs/v2/
+docs/v3/
+docs/future/
+docs/process/
+
+# Large local sample data
+samples/
+fixtures/local/
+testdata/local/
