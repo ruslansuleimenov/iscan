@@ -1,8 +1,7 @@
 import argparse
 import sys
-from collections.abc import Callable, Sequence
+from collections.abc import Sequence
 from pathlib import Path
-from typing import cast
 
 from rich.console import Console
 
@@ -13,30 +12,13 @@ from iscan.core.scan import bootstrap_scan
 console = Console()
 
 
-def normalize_cli_args(args: Sequence[str]) -> list[str]:
-    normalized = list(args)
-    # Короткая форма `iscan /path` должна вести себя как `iscan scan /path`.
-    if normalized and not normalized[0].startswith("-") and normalized[0] != "scan":
-        return ["scan", *normalized]
-    return normalized
-
-
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="iscan",
         description="Find duplicate and near-duplicate photos on local disk.",
     )
     parser.add_argument("--version", action="version", version=__version__)
-
-    subparsers = parser.add_subparsers(dest="command")
-
-    scan_parser = subparsers.add_parser(
-        "scan",
-        help="Scan local photo files or directories.",
-        description="Scan local photo files or directories.",
-    )
-    add_scan_arguments(scan_parser)
-    scan_parser.set_defaults(handler=run_scan_command)
+    add_scan_arguments(parser)
 
     return parser
 
@@ -44,9 +26,9 @@ def build_parser() -> argparse.ArgumentParser:
 def add_scan_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "paths",
-        nargs="+",
+        nargs="*",
         type=Path,
-        help="Photo files or directories to scan.",
+        help="Photo files or directories to scan. Default: current directory.",
     )
     parser.add_argument(
         "--top-k",
@@ -90,8 +72,9 @@ def positive_int(value: str) -> int:
 
 def run_scan_command(namespace: argparse.Namespace) -> int:
     # CLI остается тонким адаптером: парсит аргументы и передает typed config в core.
+    input_paths = namespace.paths or [Path.cwd()]
     config = ScanConfig(
-        input_paths=tuple(namespace.paths),
+        input_paths=tuple(input_paths),
         top_k=namespace.top_k,
         metric=SimilarityMetric(namespace.metric),
         report_html=namespace.report_html,
@@ -117,14 +100,8 @@ def run_scan(config: ScanConfig) -> None:
 def main(argv: Sequence[str] | None = None) -> int:
     raw_args = sys.argv[1:] if argv is None else list(argv)
     parser = build_parser()
-    namespace = parser.parse_args(normalize_cli_args(raw_args))
-    raw_handler = getattr(namespace, "handler", None)
-    if raw_handler is None:
-        parser.print_help()
-        return 0
-    # argparse хранит handler динамически в Namespace, поэтому тип уточняем явно.
-    handler = cast(Callable[[argparse.Namespace], int], raw_handler)
-    return handler(namespace)
+    namespace = parser.parse_args(raw_args)
+    return run_scan_command(namespace)
 
 
 if __name__ == "__main__":

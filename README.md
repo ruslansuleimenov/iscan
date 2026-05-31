@@ -35,19 +35,16 @@ The MVP is intentionally focused:
 
 ## CLI
 
-Default scan command:
+Scan command:
 
 ```bash
 iscan /path/to/photos --report-html report.html
 ```
 
-Explicit scan command:
+If no path is provided, `iscan` scans the current directory.
 
-```bash
-iscan scan /path/to/photos --report-html report.html
-```
-
-The short form is the main user experience. The explicit `scan` form is kept for scripts and future subcommands.
+In the MVP, `iscan` without a subcommand always runs the scan pipeline.
+Use flags such as `--help` and `--version` for utility actions.
 
 ## Development
 
