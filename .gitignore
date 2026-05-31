@@ -51,6 +51,7 @@ report_assets/
 
 # Local project preparation docs / requirements
 # These files are useful locally, but should not be shared to GitHub.
+docs
 docs/roadmap.md
 docs/mvp/
 docs/v1/
