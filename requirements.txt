@@ -1,0 +1,8 @@
+mlx
+numpy
+Pillow
+pillow-heif
+rawpy
+ExifRead
+rich
+typer

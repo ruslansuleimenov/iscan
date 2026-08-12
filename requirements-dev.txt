@@ -1,0 +1,9 @@
+scipy
+scikit-learn
+matplotlib
+kagglehub
+pytest
+pytest-cov
+ruff
+mypy
+types-Pillow

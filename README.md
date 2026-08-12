@@ -48,15 +48,7 @@ Use flags such as `--help` and `--version` for utility actions.
 
 ## Development
 
-This project uses `uv`.
 
-```bash
-uv sync
-uv run iscan --help
-uv run iscan --version
-uv run ruff check .
-uv run mypy src
-```
 
 ## How It Works
 
@@ -173,6 +165,14 @@ The core engine does not depend on the CLI, HTML report, Swift UI, or MCP server
 - Local MCP server.
 - Initial MCP tool: `scan`.
 - MCP server communicates with the worker instead of duplicating engine logic.
+
+### v4
+
+- Learned image embeddings for duplicate and near-duplicate retrieval.
+- A small in-project neural-network library built on `mlx.core`.
+- Custom layers, backward pass, losses, and optimizers without `mlx.nn`.
+- A compact CNN/Siamese model trained from scratch.
+- Cache-aware GPU batching, buffer reuse, and tiled computation.
 
 ## Future Ideas
 

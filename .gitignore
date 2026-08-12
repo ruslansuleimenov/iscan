@@ -64,3 +64,6 @@ docs/process/
 samples/
 fixtures/local/
 testdata/local/
+
+data/*
+requirements-dev.txt
