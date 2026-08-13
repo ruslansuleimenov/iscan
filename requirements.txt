@@ -6,3 +6,4 @@ rawpy
 ExifRead
 rich
 typer
+pytest
