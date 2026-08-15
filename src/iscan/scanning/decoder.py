@@ -16,7 +16,6 @@ class ImageDecodeError(Exception):
     pass
 
 
-
 class ImageDecoder:
     def decode(self, path: Path) -> NDArray[np.uint8]:
         try:
@@ -27,9 +26,7 @@ class ImageDecoder:
 
             return image
         except Exception as error:
-            raise ImageDecodeError(
-                f'Cannot decode image "{path}"'
-            ) from error
+            raise ImageDecodeError(f'Cannot decode image "{path}"') from error
 
     def _decode_with_pillow(
         self,
@@ -49,7 +46,7 @@ class ImageDecoder:
                 thumb = raw.extract_thumb()
             except (
                 rawpy.LibRawNoThumbnailError,
-                rawpy.LibRawUnsupportedThumbnailError
+                rawpy.LibRawUnsupportedThumbnailError,
             ):
                 return np.array(raw.postprocess(), dtype=np.uint8)
             if thumb.format == rawpy.ThumbFormat.JPEG:
@@ -60,9 +57,4 @@ class ImageDecoder:
             elif thumb.format == rawpy.ThumbFormat.BITMAP:
                 return np.array(thumb.data, dtype=np.uint8)
             else:
-                raise ImageDecodeError(
-                    f"Unsupported image format: {thumb.format}"
-                )
-
-
-
+                raise ImageDecodeError(f"Unsupported image format: {thumb.format}")

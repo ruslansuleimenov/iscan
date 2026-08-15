@@ -20,5 +20,3 @@ class LocalDirectorySource:
             except OSError:
                 continue
         return sorted(images)
-
-
