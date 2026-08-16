@@ -1,5 +1,6 @@
 import mlx.core as mx
 
+
 def cosine_similarity(
     vector_a, vector_b
 ):  # Input vectors must be L2-normalized
@@ -21,4 +22,9 @@ def exclude_self_matches(similarity_matrix):
         similarity_matrix
     )
 
-
+def top_k_neighbor_indices(masked_similarity_matrix, top_k=5):
+    n = masked_similarity_matrix.shape[0]
+    negative_matrix = masked_similarity_matrix * (-1)
+    sorted_matrix = mx.argsort(negative_matrix, axis=1)
+    indices = sorted_matrix[:, :min(top_k, n - 1)]
+    return indices

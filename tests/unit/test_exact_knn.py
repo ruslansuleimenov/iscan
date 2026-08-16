@@ -1,4 +1,4 @@
-from iscan.search.exact_knn import cosine_similarity, pairwise_similarity, exclude_self_matches
+from iscan.search.exact_knn import cosine_similarity, pairwise_similarity, exclude_self_matches, top_k_neighbor_indices
 import mlx.core as mx
 import pytest
 
@@ -52,3 +52,26 @@ class TestExcludeSelfMatches:
         assert mx.isneginf(masked_matrix[2, 2]).item()
         assert masked_matrix[0, 1].item() == pytest.approx(0.6)
         assert masked_matrix[1, 2].item() == pytest.approx(0.8)
+
+class TestTopKNeighborIndices:
+    def test_top_k_neighbor_indices_n_3(self):
+        row_0 = mx.array([1.0, 0.6, 0.0], dtype=mx.float32)
+        row_1 = mx.array([0.6, 1.0, 0.8], dtype=mx.float32)
+        row_2 = mx.array([0.0, 0.8, 1.0], dtype=mx.float32)
+        similarity_matrix = mx.stack([row_0, row_1, row_2])
+        masked_matrix = exclude_self_matches(similarity_matrix)
+        indices = top_k_neighbor_indices(masked_matrix)
+        indices_list = indices.tolist()
+        list_0 = indices_list[0]
+        list_1 = indices_list[1]
+        list_2 = indices_list[2]
+        assert list_0 == [1, 2]
+        assert list_1 == [2, 0]
+        assert list_2 == [1, 0]
+
+    def test_top_k_neighbor_indices_n_1(self):
+        row_0 = mx.array([[0.5]], dtype=mx.float32)
+        masked_matrix = exclude_self_matches(row_0)
+        indices = top_k_neighbor_indices(masked_matrix)
+        indices_list = indices.tolist()
+        assert indices_list[0] == []

@@ -1,3 +1,5 @@
+DUPLICATE_SIMILARITY_THRESHOLD = 0.9
+
 STANDARD_EXTENSIONS = frozenset(
     {
         ".jpg",

@@ -94,9 +94,9 @@ Defaults:
 
 Approximate nearest-neighbor search with HNSW is reserved for larger collections.
 
-## Reports
+## Reports 
 
-The MVP report is a static local HTML file.
+The MVP report is a static local HTML file. Deprecated: Only CLI Report
 
 It includes:
 
@@ -144,35 +144,40 @@ The core engine does not depend on the CLI, HTML report, Swift UI, or MCP server
 - Local photo scanning.
 - `image-basic-v1` feature extraction.
 - Exact top-k nearest-neighbor search.
-- HTML report and JSON scan session.
+- HTML report and JSON scan session. Deprecated: Only CLI report 
+- A/B testing with skikit-learn libraries, identifies baseline 
 
 ### v1
 
 - PCA preprocessing.
-- CPU fallback with NumPy/scikit-learn/SciPy-like tools.
+- CPU fallback with scikit-learn library on WinOs
 - Automatic backend selection without a normal user-facing backend flag.
 
 ### v2
 
 - Worker mode.
 - Action layer for opening and deleting files.
-- HTML actions with explicit confirmation.
 - Swift/SwiftUI UI over the same engine.
 - User interaction events for ranking algorithms.
 
+
+
 ### v3
-
-- Local MCP server.
-- Initial MCP tool: `scan`.
-- MCP server communicates with the worker instead of duplicating engine logic.
-
-### v4
 
 - Learned image embeddings for duplicate and near-duplicate retrieval.
 - A small in-project neural-network library built on `mlx.core`.
 - Custom layers, backward pass, losses, and optimizers without `mlx.nn`.
 - A compact CNN/Siamese model trained from scratch.
 - Cache-aware GPU batching, buffer reuse, and tiled computation.
+
+### v4
+- AWS deployment
+- Pytorch embedding CNN network
+- Batching
+- MCP
+- Bunch of connectors(S3, Google Drive, Dropbox, etc.)
+- Transfer Learning
+- Eval Harness
 
 ## Future Ideas
 
