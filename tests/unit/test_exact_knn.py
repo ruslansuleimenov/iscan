@@ -1,4 +1,4 @@
-from iscan.search.exact_knn import cosine_similarity, pairwise_similarity
+from iscan.search.exact_knn import cosine_similarity, pairwise_similarity, exclude_self_matches
 import mlx.core as mx
 import pytest
 
@@ -39,3 +39,16 @@ class TestPairwiseSimilarity:
         assert matrix[0, 2].item() == pytest.approx(
             matrix[2, 0].item()
         )
+
+class TestExcludeSelfMatches:
+    def test_exclude_self_matches(self):
+        row_0 = mx.array([1.0, 0.6, 0.0], dtype=mx.float32)
+        row_1 = mx.array([0.6, 1.0, 0.8], dtype=mx.float32)
+        row_2 = mx.array([0.0, 0.8, 1.0], dtype=mx.float32)
+        similarity_matrix = mx.stack([row_0, row_1, row_2])
+        masked_matrix = exclude_self_matches(similarity_matrix)
+        assert mx.isneginf(masked_matrix[0, 0]).item()
+        assert mx.isneginf(masked_matrix[1, 1]).item()
+        assert mx.isneginf(masked_matrix[2, 2]).item()
+        assert masked_matrix[0, 1].item() == pytest.approx(0.6)
+        assert masked_matrix[1, 2].item() == pytest.approx(0.8)
