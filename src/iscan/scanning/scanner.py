@@ -15,8 +15,13 @@ class LocalDirectorySource:
         images = []
         for path in self.root.rglob("*"):
             try:
+                relative_path = path.relative_to(self.root)
+                relative_parts = relative_path.parts
+                if any(part.startswith(".") for part in relative_parts[:-1]):
+                    continue
                 if path.is_file() and path.suffix.lower() in SUPPORTED_EXTENSIONS:
                     images.append(path)
+
             except OSError:
                 continue
         return sorted(images)
